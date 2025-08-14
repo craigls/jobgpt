@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JobGPT Setup</title>
+  </head>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+  />
+  <body>
+    <main id="main" class="container">
+      <header id="header"></header>
+      <section id="search">
+        <form>
+          <label
+            >OpenAI API key
+            <input
+              type="password"
+              id="api-key-input"
+              name="openai-api-key"
+              required
+            />
+            <small id="help"
+              >Your API key is kept in local storage and is never sent to a
+              third party except OpenAI. If you don't have a key, create one
+              <a target="_blank" href="https://platform.openai.com/api-keys"
+                >here</a
+              ></small
+            >
+          </label>
+          <input id="save-button" type="submit" value="Save" name="save" />
+        </form>
+      </section>
+      <footer id="footer"></footer>
+    </main>
+    <script src="./options.js" type="module"></script>
+  </body>
+</html>

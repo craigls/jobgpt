@@ -1,0 +1,42 @@
+html {
+  scroll-behavior: smooth;
+}
+
+#header {
+  display: flex;
+  justify-content: space-between;
+}
+
+#main #setup {
+  position: absolute;
+  padding: 0 0.75em 0.25em 0.25em;
+  top: 0;
+  right: 0;
+  background-color: var(--pico-background-color);
+}
+
+#research-meta {
+  display: none;
+}
+
+#research-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+#tokens-used {
+  display: none;
+}
+
+#footer {
+  display: flex-end;
+  justify-content: space-between;
+}
+
+#footer #about {
+  position: fixed;
+  padding: 0 0.75em 0.25em 0.25em;
+  bottom: 0;
+  right: 0;
+  background-color: var(--pico-background-color);
+}

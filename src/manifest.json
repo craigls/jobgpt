@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "JobGPT: AI-powered company intel tool for job seekers",
+  "version": "0.0.1",
+  "description": "AI-powered company intel tool for job seekers",
+  "permissions": ["storage", "tabs", "sidePanel"],
+  "host_permissions": ["https://api.openai.com/*"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
+  "action": {
+    "default_title": "JobGPT"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  }
+}
