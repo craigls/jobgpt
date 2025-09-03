@@ -32,14 +32,17 @@ class SidepanelController {
   constructor({ clientId, state, requests }) {
     this.clientId = clientId;
     this.requests = requests || [];
-    this.state = {
-      ...DEFAULT_STATE,
-      ...(state || {}),
-    };
+    this.mergeOrSetDefaultState(state);
     this.setupDomElements();
     this.setupEventListeners();
 
-    this.update(this.state);
+    // Reset to default state when side panel is out of sync with background
+    if (state.status === STATUS.LOADING && this.requests.length === 0) {
+      console.warn("Resetting to default state.");
+      this.state = this.mergeOrSetDefaultState();
+    }
+
+    this.update();
   }
 
   setupDomElements() {
@@ -76,8 +79,8 @@ class SidepanelController {
           this.requests = this.requests.filter(
             (request) => request.id !== msg.requestId
           );
-          this.update(this.state);
-          this.saveState(this.state).then(() => {});
+          this.update();
+          this.saveState().then(() => {});
           break;
       }
     });
@@ -93,7 +96,7 @@ class SidepanelController {
     researchInput.addEventListener("input", async (event) => {
       const value = event.target.value.trim();
       this.state.searchString = value;
-      await this.saveState(this.state);
+      await this.saveState();
     });
 
     // Run company search asynchronously
@@ -110,6 +113,7 @@ class SidepanelController {
           clientId: this.clientId,
           requestId: this.requests[0].id, // Sidepanel currently handles only a single request at atime
         });
+
         this.state.status = msg.error ? STATUS.ERROR : STATUS.ABORTED;
         this.state.error = msg.error;
         this.state.content = msg.data;
@@ -120,8 +124,8 @@ class SidepanelController {
             (request) => request.id !== msg.requestId
           );
         }
-        await this.saveState(this.state);
-        this.update(this.state);
+        await this.saveState();
+        this.update();
       }
       // Send command for company research
       else if (searchString !== "") {
@@ -146,14 +150,14 @@ class SidepanelController {
         this.state.error = msg.error;
         this.state.content = msg.data;
 
-        await this.saveState(this.state);
-        this.update(this.state);
+        await this.saveState();
+        this.update();
       }
       return false;
     });
   }
 
-  async saveState(state) {
+  async saveState() {
     console.info("Saving UI state to storage..");
     const key = `clientId_${this.clientId}`;
     return chrome.storage.local.set({
@@ -161,12 +165,19 @@ class SidepanelController {
         clientId: this.clientId,
         clientVersion: CLIENT_VERSION,
         updatedAt: new Date(),
-        state: state,
+        state: this.state,
       },
     });
   }
 
-  update(state) {
+  mergeOrSetDefaultState(state = {}) {
+    this.state = {
+      ...DEFAULT_STATE,
+      ...(state || {}),
+    };
+  }
+
+  update() {
     const {
       researchButton,
       researchContent,
@@ -174,6 +185,8 @@ class SidepanelController {
       tokensCount,
       researchInput,
     } = this.elements;
+
+    const state = this.state;
 
     // Set the default state
     researchInput.value = state.searchString ?? "";
@@ -229,6 +242,7 @@ const msg = await chrome.runtime.sendMessage({
 const key = `clientId_${CLIENT_ID}`;
 const result = await chrome.storage.local.get(key);
 const state = result?.[key]?.state || {};
+
 console.info("Initializing SidepanelController.");
 new SidepanelController({
   clientId: CLIENT_ID,
