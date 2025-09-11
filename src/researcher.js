@@ -3,6 +3,9 @@ export class Researcher {
   static llmModelName = "gpt-4o-mini-search-preview";
   static llmParams = {
     max_tokens: 5000,
+    web_search_options: {
+      search_context_size: "high",
+    },
   };
 
   researchCompany(apiKey, searchString) {
@@ -39,24 +42,23 @@ export class Researcher {
       {
         role: "system",
         content: `You are a helpful company researcher that assists job applicants.
-              Search the web for current, accurate information about companies and roles at said companies.
+              Search the web for current, accurate information about a company and role at the company.
               If no role is provided, the assumed role of the job applicant is Software Engineer.
               Please highlight any negatives or red flags that a job applicant would want to know about.
-              Use your knowledge and reasoning to provide comprehensive research.`,
+-             Use your knowledge and reasoning to provide comprehensive research.`,
       },
       {
         role: "user",
-        content: `
-          Research information about ${searchString} and provide the following section headings and information. Add a line break after each section heading.
+        content: `Research information about ${searchString} and provide the following section headings and information. Add a line break after each section heading:
           - The first line should be a company name header only
-          - 🏢 Overview: A very brief description of the company in one or two sentences, include number of employees, whether it is a startup or an established business, and details about funding. Keep this section very brief.
-          - 🧑‍💻 Interview Process: Information about their hiring process, interview stages, and what to expect. Include feedback from interviewees.
+          - 🏢 Overview: A description of the company. Keep this section very brief.
+          - 🧑‍💻 Interview Process: Information about their hiring process and what to expect.
           - 💰 Salary: Salary information at this company. How does it align with the industry average?
-          - 🎮 Tech Stack: Technologies, programming languages, frameworks, and tools they use, based on job postings and other public information. Include this section if it's relevant for the role only.
+          - 🎮 Tech Stack: Technologies, programming languages, frameworks, and tools they use.
           - 🍻 Work Culture: Work environment, engineering practices, team structure, and company culture. What do current and former employees have to say about it?
-          - 🌱 Ethics, Sustainability & ESG: Insights into the company's ethical practices, sustainability initiatives, environmental impact, carbon footprint, and their commitment to ESG criteria.
-          - 🎯 Cover Letter Hooks: Specific recent news, initiatives, or company values that could be mentioned in a cover letter to show genuine interest.
-          - ⚠️ Possible Red Flags: Summary of negative information, controversies, legal entanglements, lawsuits or criticisms about the company that is relevant to a job applicant.
+          - 🌱 Ethics and Sustainability: Insights into the company's ethical practices, sustainability initiatives, environmental impact, ESG commitments.
+          - 🎯 Cover Letter Hooks: Recent news, initiatives, or company values that could be mentioned in a cover letter to show genuine interest.
+          - ⚠️ Possible Red Flags: Summary of negative information, controversies, or criticisms about the company that is relevant to a job applicant.
 
           Important Guidelines:
           - You MUST provide links for all information provided.
@@ -83,6 +85,7 @@ export class Researcher {
           - linkedin.com
           - x.com
           - angel.co
+          - crunchbase.com
           `,
       },
     ];
