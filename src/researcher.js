@@ -1,6 +1,9 @@
 export class Researcher {
   static llmEndpointUrl = "https://api.openai.com/v1/chat/completions";
   static llmModelName = "gpt-4o-mini-search-preview";
+  static llmParams = {
+    max_tokens: 5000,
+  };
 
   researchCompany(apiKey, searchString) {
     console.info("Researching company:", searchString);
@@ -15,7 +18,7 @@ export class Researcher {
         body: JSON.stringify({
           model: Researcher.llmModelName,
           messages: this.createPrompts(searchString),
-          max_tokens: 2500,
+          ...Researcher.llmParams,
         }),
       });
 
@@ -45,15 +48,15 @@ export class Researcher {
         role: "user",
         content: `
           Research information about ${searchString} and provide the following section headings and information. Add a line break after each section heading.
-          - The first line should a company name header only
+          - The first line should be a company name header only
           - 🏢 Overview: A very brief description of the company in one or two sentences, include number of employees, whether it is a startup or an established business, and details about funding. Keep this section very brief.
           - 🧑‍💻 Interview Process: Information about their hiring process, interview stages, and what to expect. Include feedback from interviewees.
           - 💰 Salary: Salary information at this company. How does it align with the industry average?
           - 🎮 Tech Stack: Technologies, programming languages, frameworks, and tools they use, based on job postings and other public information. Include this section if it's relevant for the role only.
           - 🍻 Work Culture: Work environment, engineering practices, team structure, and company culture. What do current and former employees have to say about it?
-          - 📰 In The News: Recent company news, product launches, funding rounds, or significant developments.
+          - 🌱 Ethics, Sustainability & ESG: Insights into the company's ethical practices, sustainability initiatives, environmental impact, carbon footprint, and their commitment to ESG criteria.
           - 🎯 Cover Letter Hooks: Specific recent news, initiatives, or company values that could be mentioned in a cover letter to show genuine interest.
-          - ⚠️ Possible Red Flags: Summary of negative information, controversies, or criticisms about the company that is relevant to a job applicant.
+          - ⚠️ Possible Red Flags: Summary of negative information, controversies, legal entanglements, lawsuits or criticisms about the company that is relevant to a job applicant.
 
           Important Guidelines:
           - You MUST provide links for all information provided.

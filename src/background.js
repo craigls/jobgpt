@@ -149,7 +149,6 @@ class BackgroundController {
           console.warn("Request was aborted by the user");
           return;
         }
-        request.finished = false;
 
         console.warn("Sending error info to client", clientId);
 
@@ -158,7 +157,7 @@ class BackgroundController {
           clientId: clientId,
           requestId: request.id,
           data: e.message,
-          error: e,
+          error: errors.ERROR,
         });
         // If acknowledged, then remove the request.
         if (ackMsg.ok) {

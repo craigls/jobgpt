@@ -38,8 +38,8 @@ class SidepanelController {
 
     // Reset to default state when side panel is out of sync with background
     if (state.status === STATUS.LOADING && this.requests.length === 0) {
-      console.warn("Resetting to default state.");
-      this.state = this.mergeOrSetDefaultState();
+      console.warn("State mismatch: Resetting to default state.");
+      this.mergeOrSetDefaultState();
     }
 
     this.update();
@@ -196,7 +196,7 @@ class SidepanelController {
     researchMeta.style.display = "";
 
     switch (state.status) {
-      case STATUS.ERROR_MISSING_API_KEYERROR:
+      case STATUS.ERROR:
         researchContent.innerHTML = state.content;
         researchContent.style.display = "";
 
@@ -207,7 +207,7 @@ class SidepanelController {
           chrome.runtime.openOptionsPage();
         } else if (state.error === errors.ERROR) {
           researchContent.style.display = "";
-          researchContent.innerHTML = state.content;
+          researchContent.innerHTML = `Error! ${state.content}`;
         }
         break;
       case STATUS.LOADING:
