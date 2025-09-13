@@ -63,7 +63,7 @@ export class Researcher {
 
           Important Guidelines:
           - Keep each section brief and the language short and concise.
-          - Don't add extra sections like Notes, Sources, References, Summary, Conclusion, etc.
+          - Do not add extra sections or commentary like Note, Notes, Sources, References, Summary, Conclusion, etc.
           - Do not omit negative information or criticisms of the company.
           - Make cover letter hooks relevant, specific and actionable.
           - If information is not available for a section, don't include that section nor mention that the information isn't available.
