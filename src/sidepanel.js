@@ -56,6 +56,13 @@ class SidepanelController {
     };
   }
 
+  formatOutputText(output) {
+    return output
+      .find((x) => x.type === "message")
+      .content.filter((x) => x.type === "output_text")
+      .map((x) => x.text)
+      .join(" ");
+  }
   setupEventListeners() {
     const { researchButton, researchInput, setup } = this.elements;
 
@@ -72,7 +79,7 @@ class SidepanelController {
           this.state.error = msg.error;
           this.state.content = msg.error
             ? msg.data
-            : msg.data.choices[0].message.content;
+            : this.formatOutputText(msg.data.output);
           this.state.tokens = msg.error ? 0 : msg.data.usage;
 
           // Delete request

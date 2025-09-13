@@ -114,7 +114,6 @@ class BackgroundController {
       id: ++this.nextRequestId,
       clientId,
       controller,
-      done: false,
       error: null,
     };
 
